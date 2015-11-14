@@ -1,0 +1,154 @@
+/* Empty. Add your own CSS if you like */
+
+.dave-tab {
+  background-color: #0c63ee;
+}
+
+.fullscreen-bg1 {
+  background: url('../img/bg/wg_blurred_backgrounds_13.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.logoHolder {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: 85vw;
+  margin-bottom: 30px;
+}
+
+.avatarHolder {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  height: 10vh;
+  width: auto;
+  margin-bottom: 5px;
+}
+
+.starContainer {
+  margin-bottom: 15px;
+  color: gold;
+  font-size: 30px;
+  text-align: center;
+}
+
+.snooze {
+  display: block;
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.topPadding
+{
+  padding-top: 20px;
+}
+
+/*Signup Page*/
+
+.avatarContainer {
+  /*background-color: #f1f1f1;*/
+  background-color: white;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.radioHide {
+  opacity: 0;
+  position: absolute;
+}
+
+.avatarOption {
+  width: 175px;
+  height: 175px;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.avatarBackground {
+  /*background: url(http://i.imgur.com/mW6xr2I.png);*/
+  /*background: url(../img/av-1-fnur.png);*/
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+  text-indent: -999em;
+  border: 10px solid white;
+  /*width: 126px;*/
+  width: 150px;
+  height: 150px;
+  display: block;
+  float: left;
+  margin: 10px;
+
+}
+
+#av-1-fnur {
+  background: url(../img/avatars/av-1-fnur.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+
+}
+
+#av-2-mnur {
+  background: url(../img/avatars/av-2-mnur.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-3-cros {
+  background: url(../img/avatars/av-3-cros.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-4-mnur {
+  background: url(../img/avatars/av-4-mnur.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-5-fnur {
+  background: url(../img/avatars/av-5-fnur.gif);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-6-fnur {
+  background: url(../img/avatars/av-6-fnur.gif);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-7-mdoc {
+  background: url(../img/avatars/av-7-mdoc.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#av-8-seth {
+  background: url(../img/avatars/av-8-seth.png);
+  background-size: contain ;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
+input[type="radio"]:checked + label {
+  border: 10px solid orange;
+}
+
+
+/*.label {*/
+  /*background: url(http://i.imgur.com/mW6xr2I.png);*/
+  /*text-indent: -999em;*/
+  /*border: 10px solid white;*/
+  /*width: 126px;*/
+  /*height: 126px;*/
+  /*display: block;*/
+  /*float: left;*/
+  /*margin: 10px;*/
+/*}*/
+

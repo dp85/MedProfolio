@@ -1,0 +1,32 @@
+<ion-view view-title="Login" class="fullscreen-bg1">
+  <ion-nav-bar class="bar-clear">
+    <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
+    <!--</ion-nav-back-button>-->
+
+  </ion-nav-bar>
+  <ion-nav-title>Login</ion-nav-title>
+  <ion-content class="padding">
+    <img class="logoHolder" src="img/MedProfolioLogo.png" />
+    <div class="list">
+      <label class="item item-input">
+        <span class="input-label">Email</span>
+        <input type="text" ng-model="loginCreds.email">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Password</span>
+        <input type="password" ng-model="loginCreds.password">
+      </label>
+    </div>
+    <div class="padding">
+      <button class="button button-block button-calm" ng-click="login(loginCreds)">
+        Sign-In
+      </button>
+      <button class="button button-block button-calm"  ng-click="go('signup')">
+        New Account..
+      </button>
+      <p class="text-center">
+        <a href="#/forgot-password">Forgot password</a>
+      </p>
+    </div>
+  </ion-content>
+</ion-view>
