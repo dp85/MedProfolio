@@ -140,15 +140,63 @@ input[type="radio"]:checked + label {
   border: 10px solid orange;
 }
 
+/* END Signup Page */
 
-/*.label {*/
-  /*background: url(http://i.imgur.com/mW6xr2I.png);*/
-  /*text-indent: -999em;*/
-  /*border: 10px solid white;*/
-  /*width: 126px;*/
-  /*height: 126px;*/
-  /*display: block;*/
-  /*float: left;*/
-  /*margin: 10px;*/
-/*}*/
+/* Home  */
 
+.homeHeaderBackground {
+  background-color: #11c1f3;   !important;
+  color: white;
+}
+
+/* END Home */
+
+/* Certifications */
+
+.certThumbnailHolder {
+  height: 20vh;
+  /*top | horizontal | bottom*/
+  padding: 0vh 1vh 2vh;
+}
+
+
+/* END Certifications */
+
+/* Error Messages */
+
+.error-container {
+  margin: 5px 0;
+}
+
+.error-container:last-child {
+  margin: 5px 0 0;
+}
+
+.error {
+  padding: 10px 16px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: white;
+  vertical-align: middle;
+}
+
+.error i {
+  font-size: 24px;
+  color: #B83E2C;
+  vertical-align: middle;
+}
+
+.last-error-container > .error {
+  padding: 10px 16px 0;
+}
+
+.has-errors {
+  border-bottom: 3px solid #B83E2C;
+}
+
+.no-errors {
+  border-bottom: 3px solid green;
+}
+
+/* END Error Messages */

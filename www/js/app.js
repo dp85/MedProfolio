@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('medprofolio', ['ionic'])
+angular.module('medprofolio', ['ionic', 'ngMessages'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -87,7 +87,17 @@ angular.module('medprofolio', ['ionic'])
       views: {
         'tab-certifications': {
           templateUrl: 'templates/tab-certifications.html',
-          controller: 'CertificationsCtrl'
+          controller: 'CertificationsController'
+        }
+      }
+    })
+
+    .state('tab.add-certification', {
+      url: '/add-certification',
+      views: {
+        'tab-certifications' : {
+          templateUrl: 'templates/add-certification.html',
+          controller: 'AddCertificationController'
         }
       }
     });
