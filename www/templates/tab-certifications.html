@@ -33,13 +33,16 @@
       <!--</div>-->
     <!--</div>-->
 
-    <div class="list card" ng-repeat="cert in dataFactory.certifications">
-      <div class="item item-divider" style="text-align: center">
+    <div class="list card certCard" ng-repeat="cert in dataFactory.certifications">
+      <div class="item item-icon-left">
+        <i class="icon ion-card"></i>
         {{cert.attributes.title}} </div>
       <div class="item item-body">
         <div class="certThumbnailHolder">
-          <img ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" style="max-height: 100%; max-width: 100%; display: block; margin: auto">
+          <img ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" class="framedCert">
         </div>
+        </div>
+      <div class="item">
         <div><b>Expires:</b> {{cert.attributes.expiration | date:'longDate'}}</div>
         <div><b>Issued:</b>  {{cert.attributes.issued | date: 'longDate'}}</div>
         <div><b>Notes:</b> {{cert.attributes.notes}}</div>

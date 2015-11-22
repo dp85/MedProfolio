@@ -160,11 +160,24 @@ input[type="radio"]:checked + label {
 /* Certifications */
 
 .certThumbnailHolder {
-  height: 20vh;
   /*top | horizontal | bottom*/
-  padding: 0vh 1vh 2vh;
+  padding: 0vh 1vh 0vh;
 }
 
+img.framedCert {
+  max-height: 300px;
+  width: 90%;
+  display: block;
+  margin: auto;
+
+  border: 20px solid #ccb089;
+  border-image-source: url('../img/wooden_frame.jpg');
+  border-image-slice: 50 65;
+}
+
+.certCard {
+  margin: 30px 50px;
+}
 
 /* END Certifications */
 
