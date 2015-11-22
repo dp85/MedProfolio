@@ -1,4 +1,4 @@
-<ion-view view-title="Certifications" class="fullscreen-bg1">
+<ion-view view-title="Certifications" class="fullscreen-bg2">
 
   <ion-nav-bar class="bar-clear">
     <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
@@ -13,37 +13,44 @@
 
   <ion-content class="padding">
 
+    <ion-refresher
+      pulling-text="Pull to refresh..."
+      on-refresh="refreshCertifications()" >
+    </ion-refresher >
+
     <img class="logoHolder topPadding" src="img/MedProfolioLogo.png">
 
-    <div class="list card">
-      <div class="item item-divider" style="text-align: center">
-        Ohio Nursing License </div>
-      <div class="item item-body">
-        <div class="certThumbnailHolder">
-          <img src="img/mockup/wislicense.jpg" style="max-height: 100%; max-width: 100%; display: block; margin: auto">
-        </div>
-         <div><b>Expires:</b> 12/31/2016</div>
-        <div><b>Issued:</b>  10/14/2014</div>
-        <div><b>Notes:</b></div>
-      </div>
-    </div>
+    <!--<div class="list card">-->
+      <!--<div class="item item-divider" style="text-align: center">-->
+        <!--Ohio Nursing License </div>-->
+      <!--<div class="item item-body">-->
+        <!--<div class="certThumbnailHolder">-->
+          <!--<img src="img/mockup/wislicense.jpg" style="max-height: 100%; max-width: 100%; display: block; margin: auto">-->
+        <!--</div>-->
+         <!--<div><b>Expires:</b> 12/31/2016</div>-->
+        <!--<div><b>Issued:</b>  10/14/2014</div>-->
+        <!--<div><b>Notes:</b></div>-->
+      <!--</div>-->
+    <!--</div>-->
 
-    <div class="list card">
+    <div class="list card" ng-repeat="cert in dataFactory.certifications">
       <div class="item item-divider" style="text-align: center">
-        CPR Certification </div>
+        {{cert.attributes.title}} </div>
       <div class="item item-body">
         <div class="certThumbnailHolder">
-          <img src="img/mockup/wislicense.jpg" style="max-height: 100%; max-width: 100%; display: block; margin: auto">
+          <img ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" style="max-height: 100%; max-width: 100%; display: block; margin: auto">
         </div>
-        <div><b>Expires:</b> 7/15/2016</div>
-        <div><b>Issued:</b>  7/15/2014</div>
-        <div><b>Notes:</b></div>
+        <div><b>Expires:</b> {{cert.attributes.expiration | date:'longDate'}}</div>
+        <div><b>Issued:</b>  {{cert.attributes.issued | date: 'longDate'}}</div>
+        <div><b>Notes:</b> {{cert.attributes.notes}}</div>
       </div>
     </div>
 
 
     <p class="text-center">
-      <a href="#/tab/add-certification">Add Certification..</a>
+      <button class="button button-clear button-positive" ng-click="addCert()">
+        Add Certification..
+      </button>
     </p>
 
 

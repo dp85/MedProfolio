@@ -5,6 +5,12 @@
 }
 
 .fullscreen-bg1 {
+  /*background: url('../img/bg/wg_blurred_backgrounds_13.jpg') no-repeat center center fixed;*/
+  background: url('../img/bg/MedProfolio.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.fullscreen-bg2 {
   background: url('../img/bg/wg_blurred_backgrounds_13.jpg') no-repeat center center fixed;
   background-size: cover;
 }
@@ -14,7 +20,7 @@
   margin-left: auto;
   margin-right: auto;
   height: auto;
-  width: 85vw;
+  width: 100%;
   margin-bottom: 30px;
 }
 

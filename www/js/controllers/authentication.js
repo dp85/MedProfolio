@@ -32,8 +32,8 @@
       $state.go( path );
     };
 
-  }
-    LoginController.$inject = ['$scope', '$state', 'AuthFactory'];
+  };
+    LoginController.$inject = ['$scope', '$state', 'AuthFactory' ];
 
     angular.module('medprofolio')
       .controller('LoginController', LoginController);

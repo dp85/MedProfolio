@@ -3,7 +3,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 
-angular.module('medprofolio', ['ionic', 'ngMessages'])
+angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -14,14 +14,32 @@ angular.module('medprofolio', ['ionic', 'ngMessages'])
       cordova.plugins.Keyboard.disableScroll(true);
 
     }
+
     if (window.StatusBar) {
+
       // org.apache.cordova.statusbar required
-      StatusBar.styleLightContent();
+      //StatusBar.styleLightContent();
+      window.StatusBar.styleDefault();
+
     }
+
   });
     Parse.initialize("lKDwJG9Qo8V3lyXQVwgWIALsugOAiMNrBVb00Mwa", "6wXoohdVOs7NdQNJXf3ea4DlI6zATU7ASgQ3vI1c");
 
   })
+
+// .run(function($cordovaStatusbar) {
+//
+//    alert('in cordovastatusbar');
+//    $cordovaStatusbar.overlaysWebView(true)
+//    alert('in cordovastatusbar2');
+//  $cordovaStatusBar.style(1) //Light
+//  $cordovaStatusBar.style(2) //Black, transulcent
+//  $cordovaStatusBar.style(3) //Black, opaque
+//})
+
+
+
 
 .config(function($stateProvider, $urlRouterProvider) {
 
