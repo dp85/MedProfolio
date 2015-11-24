@@ -45,7 +45,7 @@
       });
 
       return d.promise;
-    }
+    };
 
     factory.login = function(email, password) {
       var d = $q.defer();
@@ -65,7 +65,11 @@
       });
 
       return d.promise;
-    }
+    };
+
+    factory.logout = function() {
+      Parse.User.logOut();
+    };
 
     return factory;
 
