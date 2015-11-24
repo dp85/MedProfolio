@@ -52,14 +52,13 @@
       "firstname": "",
       "lastname": "",
       "email": "",
-      "password": "",
-      "avatar": ""
+      "password": ""
     };
 
     $scope.signup = function() {
       console.log("SignupController::signup");
       AuthFactory.signup($scope.newUser.firstname, $scope.newUser.lastname,
-        $scope.newUser.email, $scope.newUser.password, $scope.newUser.avatar)
+        $scope.newUser.email, $scope.newUser.password)
         .then(function ()
         {
           console.log("Created User");
@@ -69,7 +68,7 @@
     };
 
 
-  }
+  };
   SignupController.$inject = ['$scope', '$state', 'AuthFactory'];
 
   angular.module('medprofolio')

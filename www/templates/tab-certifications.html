@@ -1,4 +1,4 @@
-<ion-view view-title="Certifications" class="fullscreen-bg2">
+<ion-view view-title="Certifications" class="fullscreen-bg">
 
   <ion-nav-bar class="bar-clear">
     <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
@@ -13,12 +13,15 @@
 
   <ion-content class="padding">
 
-    <ion-refresher
-      pulling-text="Pull to refresh..."
-      on-refresh="refreshCertifications()" >
-    </ion-refresher >
+    <!--<ion-refresher-->
+      <!--pulling-text="Pull to refresh..."-->
+      <!--on-refresh="refreshCertifications()" >-->
+    <!--</ion-refresher >-->
 
-    <img class="logoHolder topPadding" src="img/MedProfolioLogo.png">
+    <img class="logoHolder" src="img/MedProfolioLogo2.png">
+
+    <h3 style="text-align: center">{{user.firstname}} {{user.lastname}}</h3>
+
 
     <!--<div class="list card">-->
       <!--<div class="item item-divider" style="text-align: center">-->
@@ -42,10 +45,10 @@
           <img ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" class="framedCert">
         </div>
         </div>
-      <div class="item">
+      <div class="item item-text-wrap">
         <div><b>Expires:</b> {{cert.attributes.expiration | date:'longDate'}}</div>
         <div><b>Issued:</b>  {{cert.attributes.issued | date: 'longDate'}}</div>
-        <div><b>Notes:</b> {{cert.attributes.notes}}</div>
+        <div style=""><b>Notes:</b> {{cert.attributes.notes}} </div>
       </div>
     </div>
 

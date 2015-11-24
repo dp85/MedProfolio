@@ -16,7 +16,7 @@
     };
 
     factory.signup = function(first, last, email,
-                              password, avatar) {
+                              password) {
       var d = $q.defer();
 
       console.log('password:' + password);
@@ -28,7 +28,6 @@
       user.set('email', email.toLowerCase());
       user.set('name', first + ' ' + last);
       user.set('password', password);
-      user.set('avatar', avatar);
 
       user.signUp(null, {
         success: function (user) {

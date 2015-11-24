@@ -13,6 +13,14 @@
             "notes": ""
         };
 
+      $scope.user = {
+        "firstname": "",
+        "lastname": "",
+      };
+
+      $scope.user.firstname = DataFactory.getFirstname();
+      $scope.user.lastname = DataFactory.getLastname();
+
       $scope.dataFactory = DataFactory;
 
         $scope.addCert = function () {
