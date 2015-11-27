@@ -4,7 +4,7 @@
 
 (function() {
 
-    var CertificationsController = function ($scope, $ionicLoading, $state, DataFactory) {
+    var CertificationsController = function ($scope, $ionicLoading, $ionicPopup, $state, DataFactory) {
 
         $scope.cert = {
             "title": "",
@@ -35,6 +35,41 @@
         });
       };
 
+      $scope.deleteCert = function(cert) {
+        var confirmPopup = $ionicPopup.confirm({
+          title: 'Delete Certification',
+          template: 'Are you sure you want delete ' + cert.attributes.title + '?'
+        });
+
+        confirmPopup.then(function(res) {
+          if(res) {
+            console.log('delete confirmed');
+            processDelete();
+
+          } else {
+            console.log('delete cancelled');
+          }
+        });
+
+        function processDelete(){
+          $ionicLoading.show();
+          var promise = DataFactory.deleteCertification(cert);
+
+          promise.then(function(cert){
+            // Certification deleted
+            console.log('deleted certification: ' + cert.attributes.title)
+          }, function(error){
+            // Failed to delete certification
+            $ionicPopup.alert({
+              title: "Error deleting Certification",
+              subTitle: error.message
+            });
+          });
+          $ionicLoading.hide();
+        }
+      };
+
+
       $ionicLoading.show();
       DataFactory.loadCertifications().then(function () {
         $scope.certifications = DataFactory.certifications;
@@ -50,7 +85,7 @@
         //    $scope.user.avatar = "av-3-cros.png";
 
     };
-    CertificationsController.$inject = ['$scope', '$ionicLoading', '$state', 'DataFactory'];
+    CertificationsController.$inject = ['$scope', '$ionicLoading', '$ionicPopup', '$state', 'DataFactory'];
 
     angular.module('medprofolio')
         .controller('CertificationsController', CertificationsController);

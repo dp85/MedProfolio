@@ -27,11 +27,17 @@
     };
 
     factory.insertCertification = function(newCert){
+
+     // Create the deferred task - https://docs.angularjs.org/api/ng/service/$q
       var d = $q.defer();
 
       var CertType = Parse.Object.extend("Certification");
       var currentUser = Parse.User.current();
       var file = newCert.image ? new Parse.File("image.jpg", {base64: newCert.image}) : null;
+
+      // Check dates
+      newCert.expiration = checkDate(newCert.expiration);
+      newCert.issued = checkDate(newCert.issued);
 
       var cert = new CertType();
       cert.set("owner", currentUser);
@@ -45,6 +51,7 @@
       cert.save(null, {
         success: function (cert) {
           console.log("Certification Added");
+          // resolve/fulfill the deferred task
           d.resolve(cert);
         },
         error: function (item, error) {
@@ -52,11 +59,26 @@
             title: "Error saving Certification",
             subTitle: error.message
           });
+          // reject the deferred task
           d.reject(error);
         }
       });
 
+      // return the promise so interested parties can get access to the result
+      // of the deferred task when it completes
       return d.promise;
+
+
+      function checkDate(date){
+        console.log('date check');
+        if(isNaN(new Date(date))) {
+          console.log("bad date");
+          return null;
+        } else {
+          console.log("date good");
+          return date;
+        }
+      }
 
     };
 
@@ -83,6 +105,31 @@
       });
 
       return d.promise;
+    };
+
+    factory.deleteCertification = function(cert){
+
+      var d = $q.defer();
+
+      cert.destroy({
+        success: function(myObject) {
+          // Object was deleted from Parse Cloud.
+
+          // Remove it from the certification collection.
+          var index = factory.certifications.indexOf(cert);
+          if(index > -1){
+            factory.certifications.splice(index, 1);
+          }
+          d.resolve(cert);
+        },
+        error: function (myObject, error) {
+         // The delete failed.
+          d.reject(error);
+        }
+      });
+
+      return d.promise;
+
     };
 
 
