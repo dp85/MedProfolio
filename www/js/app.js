@@ -4,7 +4,7 @@
 
 angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
 
-  .run(function ($ionicPlatform) {
+  .run(function ($ionicPlatform, $state, AuthFactory) {
     $ionicPlatform.ready(function () {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
@@ -24,6 +24,18 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
 
     });
     Parse.initialize("lKDwJG9Qo8V3lyXQVwgWIALsugOAiMNrBVb00Mwa", "6wXoohdVOs7NdQNJXf3ea4DlI6zATU7ASgQ3vI1c");
+
+    // See if there is an existing user
+    //var currentUser = Parse.User.current();
+    //if(currentUser)
+    //  $state.go("tab.home");
+
+    if(window.localStorage && window.localStorage.getItem('parseSession')) {
+      var s = window.localStorage.getItem('parseSession');
+      console.log(s);
+      if(AuthFactory.connectWithSession(s))
+        $state.go("tab.home");
+    }
 
   })
 

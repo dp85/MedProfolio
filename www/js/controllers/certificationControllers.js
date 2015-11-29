@@ -4,7 +4,7 @@
 
 (function() {
 
-    var CertificationsController = function ($scope, $ionicLoading, $ionicPopup, $state, DataFactory) {
+    var CertificationsController = function ($scope, $state, $ionicLoading, $ionicPopup, $ionicModal, DataFactory) {
 
         $scope.cert = {
             "title": "",
@@ -15,7 +15,7 @@
 
       $scope.user = {
         "firstname": "",
-        "lastname": "",
+        "lastname": ""
       };
 
       $scope.user.firstname = DataFactory.getFirstname();
@@ -77,15 +77,81 @@
       });
 
 
-        //$scope.user.firstname = DataFactory.getFirstname();
-        //$scope.user.lastname = DataFactory.getLastname();
-        //$scope.user.avatar = DataFactory.getAvatar();
-        //
-        //if(isBlank($scope.user.avatar))
-        //    $scope.user.avatar = "av-3-cros.png";
+      // Image Modal - For viewing a full-screen rendition of the image.
+
+
+      $scope.hide = [{
+        bars: true
+      }];
+
+
+      $ionicModal.fromTemplateUrl('templates/modal.html', function(modal) {
+        $scope.gridModal = modal;
+      }, {
+        scope: $scope,
+        animation: 'slide-in-up'
+      });
+
+      $scope.openModal = function(src, title) {
+        console.log(src);
+        if(!src)
+          return;
+
+        $scope.imageSrc = src;
+        $scope.certTitle = title;
+
+        $scope.gridModal.show();
+      };
+
+      $scope.closeModal = function() {
+        $scope.gridModal.hide();
+        $scope.hide.bars = false;
+      };
+
+
+
+
+      //$ionicModal.fromTemplateUrl('templates/modal.html', {
+      //  scope: $scope,
+      //  animation: 'slide-in-up'
+      //}).then(function(modal) {
+      //  $scope.modal = modal;
+      //});
+      //
+      //$scope.openModal = function() {
+      //  $scope.modal.show();
+      //};
+      //
+      //$scope.closeModal = function() {
+      //  $scope.modal.hide();
+      //};
+      //
+      ////Cleanup the modal when we're done with it!
+      //$scope.$on('$destroy', function() {
+      //  $scope.modal.remove();
+      //});
+      //// Execute action on hide modal
+      //$scope.$on('modal.hide', function() {
+      //  // Execute action
+      //});
+      //// Execute action on remove modal
+      //$scope.$on('modal.removed', function() {
+      //  // Execute action
+      //});
+      //$scope.$on('modal.shown', function() {
+      //  console.log('Modal is shown!');
+      //});
+      //
+      //$scope.showImage = function(src) {
+      //  $scope.imageSrc = src;
+      //
+      //  $scope.openModal();
+      //}
+
+
 
     };
-    CertificationsController.$inject = ['$scope', '$ionicLoading', '$ionicPopup', '$state', 'DataFactory'];
+    CertificationsController.$inject = ['$scope', '$state',  '$ionicLoading', '$ionicPopup', '$ionicModal', 'DataFactory'];
 
     angular.module('medprofolio')
         .controller('CertificationsController', CertificationsController);
@@ -102,7 +168,7 @@
 
 (function() {
 
-    var AddCertificationController = function ($scope, $state, $cordovaCamera, $ionicLoading, DataFactory) {
+    var AddCertificationController = function ($scope, $state, $cordovaCamera, $ionicLoading, $ionicPopup, DataFactory) {
 
         $scope.newCert = {
             "title": "",
@@ -121,6 +187,14 @@
                 DataFactory.loadCertifications().then(function () {
                   $ionicLoading.hide();
                   $state.go("tab.certifications");
+
+                  // Clear fields to enter new certification
+                  $scope.newCert.title = "";
+                  $scope.newCert.expiration = "";
+                  $scope.newCert.issued = "";
+                  $scope.newCert.notes = "";
+                  $scope.newCert.image = null;
+
                 });
               });
             }
@@ -128,13 +202,13 @@
 
       $scope.takePhoto = function () {
         var options = {
-          quality: 75,
+          quality: 50,
           destinationType: Camera.DestinationType.DATA_URL,
           sourceType: Camera.PictureSourceType.CAMERA,
-          allowEdit: true,
+         // allowEdit: true,
           encodingType: Camera.EncodingType.JPEG,
-          targetWidth: 300,
-          targetHeight: 300,
+          targetWidth: 1000,
+          targetHeight: 1000,
           popoverOptions: CameraPopoverOptions,
           saveToPhotoAlbum: false
         };
@@ -143,6 +217,10 @@
           $scope.newCert.image = "data:image/jpeg;base64," + imageData;
         }, function (err) {
           // An error occured. Show a message to the user
+          $ionicPopup.alert({
+            title: "Error adding photo",
+            subTitle: "Sorry, there was an error when trying to add the photo."
+          });
         });
       };
 
@@ -163,11 +241,15 @@
           $scope.newCert.image = "data:image/jpeg;base64," + imageData;
         }, function (err) {
           // An error occured. Show a message to the user
+          $ionicPopup.alert({
+            title: "Error adding photo",
+            subTitle: "Sorry, there was an error when trying to add the photo."
+          });
         });
       };
 
     };
-    AddCertificationController.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', 'DataFactory'];
+    AddCertificationController.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', '$ionicPopup', 'DataFactory'];
 
     angular.module('medprofolio')
         .controller('AddCertificationController', AddCertificationController);

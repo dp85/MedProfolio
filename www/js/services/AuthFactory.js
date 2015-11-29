@@ -7,7 +7,7 @@
 
 // Authentication Service
 (function() {
-  var authFactory = function($q, $ionicPopup) {
+  var authFactory = function($q, $ionicPopup, $state) {
 
     var factory = {};
 
@@ -66,6 +66,20 @@
       return d.promise;
     };
 
+    factory.connectWithSession = function(sessionToken){
+      Parse.User.become(sessionToken, null).then(function(user){
+        // Logged in with session
+        console.log("connected with existing session");
+        $state.go("tab.home");
+        return true;
+      }, function(err){
+        // Unable to connect with existing session
+        console.log("unable to connect with existing session");
+        console.log(err.message);
+        return false;
+      })
+    };
+
     factory.logout = function() {
       Parse.User.logOut();
     };
@@ -74,7 +88,7 @@
 
   };
 
-  authFactory.$inject = ['$q', '$ionicPopup'];
+  authFactory.$inject = ['$q', '$ionicPopup', '$state'];
   angular.module('medprofolio').factory('AuthFactory', authFactory);
 
   console.log("authFactory");
