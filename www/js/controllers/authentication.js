@@ -9,7 +9,7 @@
 
 (function() {
 
-  var LoginController = function ($scope, $state, AuthFactory) {
+  var LoginController = function ($scope, $state, $window, AuthFactory) {
 
     $scope.loginCreds = {
       "email": "",
@@ -43,7 +43,7 @@
     };
 
   };
-    LoginController.$inject = ['$scope', '$state', 'AuthFactory' ];
+    LoginController.$inject = ['$scope', '$state', '$window', 'AuthFactory' ];
 
     angular.module('medprofolio')
       .controller('LoginController', LoginController);
