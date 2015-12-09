@@ -70,6 +70,12 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
         controller: 'SignupController'
       })
 
+      .state('forgot', {
+        url: '/forgot',
+        templateUrl: 'templates/forgot.html',
+        controller: 'ForgotPasswordController'
+      })
+
       // setup an abstract state for the tabs directive
       .state('tab', {
         url: '/tab',
