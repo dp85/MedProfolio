@@ -4,7 +4,8 @@
 
 (function() {
 
-    var CertificationsController = function ($scope, $state, $ionicLoading, $ionicPopup, $ionicModal, DataFactory) {
+    var CertificationsController = function ($scope, $state, $ionicLoading, $ionicPopup,
+                                             $ionicModal, DataFactory, ReportSvc) {
 
         $scope.cert = {
             "title": "",
@@ -108,7 +109,83 @@
         $scope.hide.bars = false;
       };
 
+      _activate();
 
+      function _activate() {
+//
+// ReportSvc Event Listeners: Progress/Done
+//    used to listen for async progress updates so loading text can change in
+//    UI to be repsonsive because the report process can be 'lengthy' on
+//    older devices (chk reportSvc for emitting events)
+//
+        $scope.$on('ReportSvc::Progress', function(event, msg) {
+          _showLoading(msg);
+        });
+        $scope.$on('ReportSvc::Done', function(event, err) {
+          _hideLoading();
+        });
+      }
+
+      // PDF Export Functionality
+
+      $scope.export = function() {
+
+        // Build the data that is needed for the content of the PDF.
+        var profolio = {
+          name: $scope.user.firstname + ' ' + $scope.user.lastname,
+          certs: $scope.certifications
+        };
+
+
+        //if no cordova, then running in browser and need to use dataURL and iframe
+        if (!window.cordova) {
+          ReportSvc.runReportDataURL( {},{} )
+            .then(function(dataURL) {
+              //set the iframe source to the dataURL created
+              console.log('report run in browser using dataURL and iframe');
+              document.getElementById('pdfImage').src = dataURL;
+            });
+          return true;
+        }
+        //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+        else {
+          ReportSvc.runReportAsync(profolio)
+            .then(function(filePath) {
+              //log the file location for debugging and oopen with inappbrowser
+              console.log('report run on device using File plugin');
+              console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+             // window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
+
+              //cordova.plugins.fileOpener2.open(
+              //  filePath, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
+              //  'application/pdf'
+              //);
+
+              cordova.plugins.disusered.open(filePath);
+              hideLoading();
+            });
+          return true;
+        }
+      };
+
+      //reset the iframe to show the empty html page from app start
+      function _clearReport() {
+        document.getElementById('pdfImage').src = "empty.html";
+      }
+//
+// Loading UI Functions: utility functions to show/hide loading UI
+//
+      function _showLoading(msg) {
+        $ionicLoading.show({
+          template: msg
+        });
+      }
+      function _hideLoading(){
+        $ionicLoading.hide();
+      }
+
+
+      // END PDF Export Functionality
 
 
       //$ionicModal.fromTemplateUrl('templates/modal.html', {
@@ -151,7 +228,8 @@
 
 
     };
-    CertificationsController.$inject = ['$scope', '$state',  '$ionicLoading', '$ionicPopup', '$ionicModal', 'DataFactory'];
+    CertificationsController.$inject = ['$scope', '$state',  '$ionicLoading', '$ionicPopup',
+      '$ionicModal', 'DataFactory', 'ReportSvc'];
 
     angular.module('medprofolio')
         .controller('CertificationsController', CertificationsController);

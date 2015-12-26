@@ -132,6 +132,15 @@
 
     };
 
+    factory.createPdf = function() {
+
+      var dd = {
+        content: [
+          'MedProfolio - Certifications Licenses PDF'
+        ]
+      };
+
+    };
 
     return factory;
 
