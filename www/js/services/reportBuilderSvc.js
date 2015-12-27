@@ -83,7 +83,7 @@
 
         var t = {
           align: 'center',
-          margin: [0,20,0,0],
+          margin: [0,20,0,0],  // [left, top, right, bottom]
           table: {
             widths: [400, 100],
             headerRows: 1,
@@ -102,17 +102,52 @@
             alignment: 'center',
             fontSize: 30,
             bold: true,
-            pageBreak: 'before'
+            underline: true,
+            pageBreak: 'before',
+            margin: [0,20,0,40]  // [left, top, right, bottom]
           });
 
+
+          console.log(profolio.certs[i].imageData);
           // Image of Certificate
+
+          if(profolio.certs[i].imageData) {
+            content.push({
+              image: profolio.certs[i].imageData,
+              width: 400,
+              alignment: 'center'
+            });
+          } else {
+            content.push({
+              text: 'No picture of ' + profolio.certs[i].attributes.title + ' was uploaded',
+              alignment: 'center',
+              fontSize: 20,
+              italic: true
+            });
+          }
+
+          // Issued, Expires
+          var issued = new Date(profolio.certs[i].attributes.issued);
+          var issuedString = issued.getMonth() + '/' + issued.getDate() + '/' + issued.getFullYear();
+
+          var expire = new Date(profolio.certs[i].attributes.expiration);
+          var expireString = expire.getMonth() + '/' + expire.getDate() + '/' + expire.getFullYear();
+
           content.push({
-            image: profolio.certs[i].attributes.image.url().replace('http://', 'https://'),
-            width: 400,
-            alignment: 'center'
+            margin: [20,20,20,0],
+            table: {
+              widths: [40,'auto'],
+              body: [
+               [ { text: 'Issued', bold: true}, issuedString ],
+               [ { text: 'Expires:', bold: true}, expireString],
+               [ { text: 'Notes:', bold: true}, profolio.certs[i].attributes.notes]
+              ]
+            },
+            layout: 'noBorders'
           });
 
-          // Issued, Expires, Notes
+          // Notes
+
         }
 
         console.log('content created');

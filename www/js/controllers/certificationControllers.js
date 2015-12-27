@@ -137,9 +137,48 @@
         };
 
 
+        function getBase64Image(img, height, width) {
+          // Create an empty canvas element
+          var canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+
+          // Copy the image contents to the canvas
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0);
+
+          // Get the data-URL formatted image
+          // Firefox supports PNG and JPEG. You could check img.src to
+          // guess the original format, but be aware the using "image/jpg"
+          // will re-encode the image.
+          var dataURL = canvas.toDataURL("image/png");
+
+          console.log(dataURL);
+          //var dataURL = canvas.toDataURL();
+
+          return dataURL;
+        }
+
+        var certImageCount = profolio.certs.length;
+        // Get the image data for each certification
+        for(var i = 0; i < profolio.certs.length; i++){
+          var imgEle = document.getElementById("certImage_" + i);
+          var imageBase64 = null;
+          if(imgEle.src) {
+            console.log(imgEle.naturalHeight);
+            console.log(imgEle.height);
+            var img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = imgEle.src.replace("https://files.parsetfss.com/",
+                                   "https:\/\/medprofolio.parseapp.com\/images\/");
+            imageBase64 = getBase64Image(imgEle, imgEle.naturalHeight, imgEle.naturalWidth);
+          }
+          profolio.certs[i].imageData = imageBase64;
+        }
+
         //if no cordova, then running in browser and need to use dataURL and iframe
         if (!window.cordova) {
-          ReportSvc.runReportDataURL( {},{} )
+          ReportSvc.runReportDataURL(profolio)
             .then(function(dataURL) {
               //set the iframe source to the dataURL created
               console.log('report run in browser using dataURL and iframe');
@@ -154,7 +193,7 @@
               //log the file location for debugging and oopen with inappbrowser
               console.log('report run on device using File plugin');
               console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-             // window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
+              // window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
 
               //cordova.plugins.fileOpener2.open(
               //  filePath, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
@@ -166,6 +205,7 @@
             });
           return true;
         }
+
       };
 
       //reset the iframe to show the empty html page from app start

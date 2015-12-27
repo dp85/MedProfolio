@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "MedProfolio": {
+      "applicationId": "lKDwJG9Qo8V3lyXQVwgWIALsugOAiMNrBVb00Mwa"
+    },
+    "_default": {
+      "link": "MedProfolio"
+    }
+  }
+}

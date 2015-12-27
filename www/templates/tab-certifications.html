@@ -47,7 +47,8 @@
       </div>
       <div class="item item-body">
         <div class="certThumbnailHolder" ng-click="openModal(cert.attributes.image.url().replace('http://', 'https://'), cert.attributes.title)">
-          <img ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" class="framedCert">
+          <img crossorigin="anonymous" id="certImage_{{$index}}" ng-src="{{cert.attributes.image.url().replace('http://files.parsetfss.com/', 'https:\/\/medprofolio.parseapp.com\/images\/')}}" class="framedCert">
+          <!--<img id="certImage_{{$index}}" ng-src="{{cert.attributes.image.url().replace('http://', 'https://')}}" class="framedCert">-->
         </div>
         </div>
       <div class="item item-text-wrap">
