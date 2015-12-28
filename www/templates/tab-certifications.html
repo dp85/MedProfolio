@@ -1,6 +1,8 @@
 <ion-view view-title="Certifications" class="fullscreen-bg">
 
-  <ion-nav-bar class="bar-clear">
+  <ion-nav-bar class="bar-stable">
+
+    <!--style="color: #009900; background-color: #009900"-->
     <!--<ion-nav-back-button class="button-icon ion-arrow-left-c">-->
     <!--</ion-nav-back-button>-->
 
@@ -21,20 +23,6 @@
     <img class="logoHolder" src="img/MedProfolioLogo2.png">
 
     <h3 style="text-align: center">{{user.firstname}} {{user.lastname}}</h3>
-
-
-    <!--<div class="list card">-->
-      <!--<div class="item item-divider" style="text-align: center">-->
-        <!--Ohio Nursing License </div>-->
-      <!--<div class="item item-body">-->
-        <!--<div class="certThumbnailHolder">-->
-          <!--<img src="img/mockup/wislicense.jpg" style="max-height: 100%; max-width: 100%; display: block; margin: auto">-->
-        <!--</div>-->
-         <!--<div><b>Expires:</b> 12/31/2016</div>-->
-        <!--<div><b>Issued:</b>  10/14/2014</div>-->
-        <!--<div><b>Notes:</b></div>-->
-      <!--</div>-->
-    <!--</div>-->
 
     <div class="list card certCard" ng-repeat="cert in dataFactory.certifications">
       <div class="item item-icon-left" ng-click="showDelete = !showDelete">

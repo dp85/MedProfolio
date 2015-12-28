@@ -107,8 +107,6 @@
             margin: [0,20,0,40]  // [left, top, right, bottom]
           });
 
-
-          console.log(profolio.certs[i].imageData);
           // Image of Certificate
 
           if(profolio.certs[i].imageData) {
@@ -126,7 +124,7 @@
             });
           }
 
-          // Issued, Expires
+          // Issued, Expires, Notes
           var issued = new Date(profolio.certs[i].attributes.issued);
           var issuedString = issued.getMonth() + '/' + issued.getDate() + '/' + issued.getFullYear();
 
@@ -145,9 +143,6 @@
             },
             layout: 'noBorders'
           });
-
-          // Notes
-
         }
 
         console.log('content created');

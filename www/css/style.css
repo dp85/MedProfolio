@@ -290,6 +290,10 @@ img.framedCert {
 }
 
 
+.medProGreenBackground {
+  background-color: #009900 !important;
+  color: white !important;
+}
 
 /*.transparent {*/
   /*background: transparent !important;*/

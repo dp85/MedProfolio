@@ -198,7 +198,7 @@
 
       function gotFS(fileSystem) {
         console.error('SaveFile: gotFS --> getFile');
-        fileSystem.root.getFile("rptSample.pdf", {create: true, exclusive: false}, gotFileEntry, fail);
+        fileSystem.root.getFile("MedProfolio.pdf", {create: true, exclusive: false}, gotFileEntry, fail);
       }
 
       function gotFileEntry(fileEntry) {

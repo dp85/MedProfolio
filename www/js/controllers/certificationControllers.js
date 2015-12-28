@@ -130,6 +130,8 @@
 
       $scope.export = function() {
 
+        $ionicLoading.show();
+
         // Build the data that is needed for the content of the PDF.
         var profolio = {
           name: $scope.user.firstname + ' ' + $scope.user.lastname,
@@ -152,9 +154,7 @@
           // guess the original format, but be aware the using "image/jpg"
           // will re-encode the image.
           var dataURL = canvas.toDataURL("image/png");
-
-          console.log(dataURL);
-          //var dataURL = canvas.toDataURL();
+          //console.log(dataURL);
 
           return dataURL;
         }
@@ -165,8 +165,6 @@
           var imgEle = document.getElementById("certImage_" + i);
           var imageBase64 = null;
           if(imgEle.src) {
-            console.log(imgEle.naturalHeight);
-            console.log(imgEle.height);
             var img = new Image();
             img.crossOrigin = "anonymous";
             img.src = imgEle.src.replace("https://files.parsetfss.com/",
@@ -184,6 +182,7 @@
               console.log('report run in browser using dataURL and iframe');
               document.getElementById('pdfImage').src = dataURL;
             });
+          $ionicLoading.hide();
           return true;
         }
         //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
@@ -199,7 +198,7 @@
               //  filePath, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
               //  'application/pdf'
               //);
-
+              $ionicLoading.hide();
               cordova.plugins.disusered.open(filePath);
               hideLoading();
             });
@@ -216,55 +215,16 @@
 // Loading UI Functions: utility functions to show/hide loading UI
 //
       function _showLoading(msg) {
-        $ionicLoading.show({
-          template: msg
-        });
+        //$ionicLoading.show({
+        //  template: msg
+        //});
       }
       function _hideLoading(){
-        $ionicLoading.hide();
+      //  $ionicLoading.hide();
       }
 
 
       // END PDF Export Functionality
-
-
-      //$ionicModal.fromTemplateUrl('templates/modal.html', {
-      //  scope: $scope,
-      //  animation: 'slide-in-up'
-      //}).then(function(modal) {
-      //  $scope.modal = modal;
-      //});
-      //
-      //$scope.openModal = function() {
-      //  $scope.modal.show();
-      //};
-      //
-      //$scope.closeModal = function() {
-      //  $scope.modal.hide();
-      //};
-      //
-      ////Cleanup the modal when we're done with it!
-      //$scope.$on('$destroy', function() {
-      //  $scope.modal.remove();
-      //});
-      //// Execute action on hide modal
-      //$scope.$on('modal.hide', function() {
-      //  // Execute action
-      //});
-      //// Execute action on remove modal
-      //$scope.$on('modal.removed', function() {
-      //  // Execute action
-      //});
-      //$scope.$on('modal.shown', function() {
-      //  console.log('Modal is shown!');
-      //});
-      //
-      //$scope.showImage = function(src) {
-      //  $scope.imageSrc = src;
-      //
-      //  $scope.openModal();
-      //}
-
 
 
     };
