@@ -32,8 +32,13 @@
             $window.localStorage['parseSession'] = user.getSessionToken();
             console.log(user.getSessionToken());
           }
+          $scope.loginCreds.email = "";
+          $scope.loginCreds.password = "";
 
           $state.go('tab.home');
+        }, function(error){
+          console.log('Invalid Login');
+          $scope.loginCreds.password = "";
         });
 
     };

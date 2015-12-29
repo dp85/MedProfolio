@@ -5,7 +5,7 @@
 (function() {
 
     var CertificationsController = function ($scope, $state, $ionicLoading, $ionicPopup,
-                                             $ionicModal, DataFactory, ReportSvc) {
+                                             $ionicModal, DataFactory, ReportSvc, $q) {
 
         $scope.cert = {
             "title": "",
@@ -109,101 +109,95 @@
         $scope.hide.bars = false;
       };
 
-      _activate();
-
-      function _activate() {
-//
-// ReportSvc Event Listeners: Progress/Done
-//    used to listen for async progress updates so loading text can change in
-//    UI to be repsonsive because the report process can be 'lengthy' on
-//    older devices (chk reportSvc for emitting events)
-//
-        $scope.$on('ReportSvc::Progress', function(event, msg) {
-          _showLoading(msg);
-        });
-        $scope.$on('ReportSvc::Done', function(event, err) {
-          _hideLoading();
-        });
-      }
 
       // PDF Export Functionality
-
       $scope.export = function() {
 
-        $ionicLoading.show();
 
-        // Build the data that is needed for the content of the PDF.
-        var profolio = {
-          name: $scope.user.firstname + ' ' + $scope.user.lastname,
-          certs: $scope.certifications
-        };
+        function asyncLoadPDF(){
+          var deferred = $q.defer();
+
+          // Build the data that is needed for the content of the PDF.
+          var profolio = {
+            name: $scope.user.firstname + ' ' + $scope.user.lastname,
+            certs: $scope.certifications
+          };
 
 
-        function getBase64Image(img, height, width) {
-          // Create an empty canvas element
-          var canvas = document.createElement("canvas");
-          canvas.width = width;
-          canvas.height = height;
+          function getBase64Image(img, height, width) {
+            // Create an empty canvas element
+            var canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
 
-          // Copy the image contents to the canvas
-          var ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0);
+            // Copy the image contents to the canvas
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
 
-          // Get the data-URL formatted image
-          // Firefox supports PNG and JPEG. You could check img.src to
-          // guess the original format, but be aware the using "image/jpg"
-          // will re-encode the image.
-          var dataURL = canvas.toDataURL("image/png");
-          //console.log(dataURL);
+            // Get the data-URL formatted image
+            // Firefox supports PNG and JPEG. You could check img.src to
+            // guess the original format, but be aware the using "image/jpg"
+            // will re-encode the image.
+            var imgData = canvas.toDataURL("image/png");
+            //console.log(dataURL);
 
-          return dataURL;
-        }
-
-        var certImageCount = profolio.certs.length;
-        // Get the image data for each certification
-        for(var i = 0; i < profolio.certs.length; i++){
-          var imgEle = document.getElementById("certImage_" + i);
-          var imageBase64 = null;
-          if(imgEle.src) {
-            var img = new Image();
-            img.crossOrigin = "anonymous";
-            img.src = imgEle.src.replace("https://files.parsetfss.com/",
-                                   "https:\/\/medprofolio.parseapp.com\/images\/");
-            imageBase64 = getBase64Image(imgEle, imgEle.naturalHeight, imgEle.naturalWidth);
+            return imgData;
           }
-          profolio.certs[i].imageData = imageBase64;
+
+          var certImageCount = profolio.certs.length;
+          // Get the image data for each certification
+          for(var i = 0; i < profolio.certs.length; i++){
+            var imgEle = document.getElementById("certImage_" + i);
+            var imageBase64 = null;
+            if(imgEle.src) {
+              var img = new Image();
+              img.crossOrigin = "anonymous";
+              img.src = imgEle.src.replace("https://files.parsetfss.com/",
+                "https:\/\/medprofolio.parseapp.com\/images\/");
+              imageBase64 = getBase64Image(imgEle, imgEle.naturalHeight, imgEle.naturalWidth);
+            }
+            profolio.certs[i].imageData = imageBase64;
+          }
+
+          //if no cordova, then running in browser and need to use dataURL and iframe
+          if (!window.cordova) {
+            ReportSvc.runReportDataURL(profolio)
+              .then(function(dataURL) {
+                //set the iframe source to the dataURL created
+                console.log('report run in browser using dataURL and iframe');
+                document.getElementById('pdfImage').src = dataURL;
+                deferred.resolve();
+              });
+          }
+          //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
+          else {
+            ReportSvc.runReportAsync(profolio)
+              .then(function(filePath) {
+                //log the file location for debugging and oopen with inappbrowser
+                console.log('report run on device using File plugin');
+                console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
+
+                cordova.plugins.disusered.open(filePath);
+                deferred.resolve();
+              });
+          }
+
+          return deferred.promise;
+
         }
 
-        //if no cordova, then running in browser and need to use dataURL and iframe
-        if (!window.cordova) {
-          ReportSvc.runReportDataURL(profolio)
-            .then(function(dataURL) {
-              //set the iframe source to the dataURL created
-              console.log('report run in browser using dataURL and iframe');
-              document.getElementById('pdfImage').src = dataURL;
-            });
+        $ionicLoading.show({template: 'Generating PDF .. This may take several minutes'});
+        var promise = asyncLoadPDF();
+        promise.then(function(){
           $ionicLoading.hide();
-          return true;
-        }
-        //if codrova, then running in device/emulator and able to save file and open w/ InAppBrowser
-        else {
-          ReportSvc.runReportAsync(profolio)
-            .then(function(filePath) {
-              //log the file location for debugging and oopen with inappbrowser
-              console.log('report run on device using File plugin');
-              console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-              // window.open(filePath, '_blank', 'location=no,closebuttoncaption=Close,enableViewportScale=yes');
+          console.log('PDF success');
+        }, function(){
+          $ionicLoading.hide();
+          console.log('PDF Failed');
+          alert('Failed to create PDF. Try again and contact MedProfolio if problem persists.')
+        });
 
-              //cordova.plugins.fileOpener2.open(
-              //  filePath, // You can also use a Cordova-style file uri: cdvfile://localhost/persistent/Download/starwars.pdf
-              //  'application/pdf'
-              //);
-              $ionicLoading.hide();
-              cordova.plugins.disusered.open(filePath);
-              hideLoading();
-            });
-          return true;
-        }
+
 
       };
 
@@ -211,25 +205,13 @@
       function _clearReport() {
         document.getElementById('pdfImage').src = "empty.html";
       }
-//
-// Loading UI Functions: utility functions to show/hide loading UI
-//
-      function _showLoading(msg) {
-        //$ionicLoading.show({
-        //  template: msg
-        //});
-      }
-      function _hideLoading(){
-      //  $ionicLoading.hide();
-      }
-
 
       // END PDF Export Functionality
 
 
     };
     CertificationsController.$inject = ['$scope', '$state',  '$ionicLoading', '$ionicPopup',
-      '$ionicModal', 'DataFactory', 'ReportSvc'];
+      '$ionicModal', 'DataFactory', 'ReportSvc', '$q'];
 
     angular.module('medprofolio')
         .controller('CertificationsController', CertificationsController);
@@ -246,7 +228,14 @@
 
 (function() {
 
-    var AddCertificationController = function ($scope, $state, $cordovaCamera, $ionicLoading, $ionicPopup, DataFactory) {
+    var AddCertificationController = function ($scope, $state, $cordovaCamera, $ionicLoading, $ionicPopup,
+                                               DataFactory) {
+
+      // This is used so the back-button is displayed on tab-add-certification.html
+      //https://forum.ionicframework.com/t/back-button-not-showing-when-coming-from-nested-pages-tabs/18019/6
+      $scope.$on('$ionicView.beforeEnter', function (event, viewData) {
+        viewData.enableBack = true;
+      });
 
         $scope.newCert = {
             "title": "",
@@ -327,7 +316,8 @@
       };
 
     };
-    AddCertificationController.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', '$ionicPopup', 'DataFactory'];
+    AddCertificationController.$inject = ['$scope', '$state', '$cordovaCamera', '$ionicLoading', '$ionicPopup',
+      'DataFactory'];
 
     angular.module('medprofolio')
         .controller('AddCertificationController', AddCertificationController);

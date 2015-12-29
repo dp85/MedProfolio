@@ -39,23 +39,12 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
 
   })
 
-// .run(function($cordovaStatusbar) {
-//
-//    alert('in cordovastatusbar');
-//    $cordovaStatusbar.overlaysWebView(true)
-//    alert('in cordovastatusbar2');
-//  $cordovaStatusBar.style(1) //Light
-//  $cordovaStatusBar.style(2) //Black, transulcent
-//  $cordovaStatusBar.style(3) //Black, opaque
-//})
-
 
   .config(function ($stateProvider, $urlRouterProvider) {
 
     // Ionic uses AngularUI Router which uses the concept of states
     // Learn more here: https://github.com/angular-ui/ui-router
     // Set up the various states which the app can be in.
-    // Each state's controller can be found in controllers.js
     $stateProvider
 
       .state('login', {
@@ -85,26 +74,6 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
       })
 
       // Each tab has its own nav history stack:
-
-      .state('tab.home', {
-        url: '/home',
-        views: {
-          'tab-home': {
-            templateUrl: 'templates/tab-home.html',
-            controller: 'HomeController'
-          }
-        }
-      })
-
-      .state('tab.prodev', {
-        url: '/prodev',
-        views: {
-          'tab-prodev': {
-            templateUrl: 'templates/tab-prodev.html',
-            controller: 'ProDevCtrl'
-          }
-        }
-      })
 
       .state('tab.jobs', {
         url: '/jobs',

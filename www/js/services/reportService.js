@@ -34,24 +34,17 @@
     function _runReportAsync(profolio) {
       var deferred = $q.defer();
 
-      showLoading('1.Processing Transcript');
       generateReportDef(profolio).then(function(docDef) {
-        showLoading('2. Generating Report');
         return generateReportDoc(docDef);
       }).then(function(pdfDoc) {
-        showLoading('3. Buffering Report');
         return generateReportBuffer(pdfDoc);
       }).then(function(buffer) {
-        showLoading('4. Saving Report File');
         return generateReportBlob(buffer);
       }).then(function(pdfBlob) {
-        showLoading('5. Opening Report File');
         return saveFile(pdfBlob);
       }).then(function(filePath) {
-        hideLoading();
         deferred.resolve(filePath);
       }, function(error) {
-        hideLoading();
         console.log('Error: ' + error.toString());
         deferred.reject(error);
       });
@@ -63,18 +56,13 @@
     function _runReportDataURL(profolio) {
       var deferred = $q.defer();
 
-      showLoading('1.Processing Transcript');
       generateReportDef(profolio).then(function(docDef) {
-        showLoading('2. Generating Report');
         return generateReportDoc(docDef);
       }).then(function(pdfDoc) {
-        showLoading('3. Convert to DataURL');
         return getDataURL(pdfDoc);
       }).then(function(outDoc) {
-        hideLoading();
         deferred.resolve(outDoc);
       }, function(error) {
-        hideLoading();
         console.log('Error: ' + error.toString());
         deferred.reject(error);
       });
@@ -227,15 +215,6 @@
       }
 
       return deferred.promise;
-    }
-//
-// Loading UI Functions: utility functions to show/hide loading UI
-//
-    function showLoading(msg) {
-      $rootScope.$broadcast('ReportSvc::Progress', msg);
-    }
-    function hideLoading(){
-      $rootScope.$broadcast('ReportSvc::Done');
     }
   }
 
