@@ -34,7 +34,7 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
       var s = window.localStorage.getItem('parseSession');
       console.log(s);
       if(AuthFactory.connectWithSession(s))
-        $state.go("tab.home");
+        $state.go("tab.certifications");
     }
 
   })

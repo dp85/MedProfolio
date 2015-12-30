@@ -19,8 +19,6 @@
                               password) {
       var d = $q.defer();
 
-      console.log('password:' + password);
-
       var user = new Parse.User();
       user.set('username', email.toLowerCase());
       user.set('firstname', first);
@@ -70,7 +68,7 @@
       Parse.User.become(sessionToken, null).then(function(user){
         // Logged in with session
         console.log("connected with existing session");
-        $state.go("tab.home");
+        $state.go("tab.certifications");
         return true;
       }, function(err){
         // Unable to connect with existing session

@@ -5,7 +5,7 @@
 
 (function() {
 
-  var TabController = function ($scope, $state, AuthFactory) {
+  var TabController = function ($scope, $state, AuthFactory, $rootScope) {
 
     $scope.logout = function() {
       AuthFactory.logout();
@@ -14,7 +14,7 @@
 
   };
 
-  TabController.$inject = ['$scope', '$state', 'AuthFactory'];
+  TabController.$inject = ['$scope', '$state', 'AuthFactory', '$rootScope'];
 
   angular.module('medprofolio')
     .controller('TabController', TabController);

@@ -5,8 +5,10 @@
 (function() {
 
     var CertificationsController = function ($scope, $state, $ionicLoading, $ionicPopup,
-                                             $ionicModal, DataFactory, ReportSvc, $q) {
+                                             $ionicModal, DataFactory, ReportSvc, $q,
+                                             $rootScope, $ionicScrollDelegate) {
 
+      console.log("In CertificationsController");
         $scope.cert = {
             "title": "",
             "expiration": "",
@@ -19,10 +21,33 @@
         "lastname": ""
       };
 
-      $scope.user.firstname = DataFactory.getFirstname();
-      $scope.user.lastname = DataFactory.getLastname();
+      function loadProfolio()
+      {
+        $ionicLoading.show();
 
-      $scope.dataFactory = DataFactory;
+        $scope.dataFactory = null;
+        $scope.user.firstname = DataFactory.getFirstname();
+        $scope.user.lastname = DataFactory.getLastname();
+
+
+        DataFactory.loadCertifications().then(function () {
+          $scope.certifications = DataFactory.certifications;
+          $scope.dataFactory = DataFactory;
+          $ionicLoading.hide();
+          $ionicScrollDelegate.scrollTop(false);
+        });
+      }
+      // for the first login, the event will not be heard because the
+      // controller isn't loaded up yet
+      loadProfolio();
+
+      $rootScope.$on('login', function(event, args) {
+        console.log('login event received');
+        loadProfolio();
+      });
+
+
+
 
         $scope.addCert = function () {
           $state.go('tab.add-certification');
@@ -69,13 +94,6 @@
           $ionicLoading.hide();
         }
       };
-
-
-      $ionicLoading.show();
-      DataFactory.loadCertifications().then(function () {
-        $scope.certifications = DataFactory.certifications;
-        $ionicLoading.hide();
-      });
 
 
       // Image Modal - For viewing a full-screen rendition of the image.
@@ -176,10 +194,16 @@
                 //log the file location for debugging and oopen with inappbrowser
                 console.log('report run on device using File plugin');
                 console.log('ReportCtrl: Opening PDF File (' + filePath + ')');
-
-                cordova.plugins.disusered.open(filePath);
+                try {
+                  cordova.plugins.disusered.open(filePath);
+                }
+                catch(e) {
+                  deferred.reject(e);
+                }
                 deferred.resolve();
-              });
+              }, function(e){
+                deferred.reject(e);
+              } );
           }
 
           return deferred.promise;
@@ -191,14 +215,16 @@
         promise.then(function(){
           $ionicLoading.hide();
           console.log('PDF success');
-        }, function(){
+        }, function(e){
           $ionicLoading.hide();
           console.log('PDF Failed');
-          alert('Failed to create PDF. Try again and contact MedProfolio if problem persists.')
+
+          $ionicPopup.alert({
+            title: "PDF Error",
+            subTitle: "Failed to create PDF. Try again and contact help@medprofolio.com if problem persists."
+          });
+
         });
-
-
-
       };
 
       //reset the iframe to show the empty html page from app start
@@ -211,7 +237,7 @@
 
     };
     CertificationsController.$inject = ['$scope', '$state',  '$ionicLoading', '$ionicPopup',
-      '$ionicModal', 'DataFactory', 'ReportSvc', '$q'];
+      '$ionicModal', 'DataFactory', 'ReportSvc', '$q', '$rootScope', '$ionicScrollDelegate'];
 
     angular.module('medprofolio')
         .controller('CertificationsController', CertificationsController);

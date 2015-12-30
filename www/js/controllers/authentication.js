@@ -9,7 +9,7 @@
 
 (function() {
 
-  var LoginController = function ($scope, $state, $window, AuthFactory) {
+  var LoginController = function ($scope, $state, $window, AuthFactory, $rootScope) {
 
     $scope.loginCreds = {
       "email": "",
@@ -20,7 +20,6 @@
     $scope.login = function (creds) {
       console.log('LoginContoller::signIn');
       console.log(creds.email);
-      console.log(creds.password);
       AuthFactory.login(creds.email, creds.password)
         .then(function(user) {
           console.log('LoginController::then');
@@ -35,7 +34,11 @@
           $scope.loginCreds.email = "";
           $scope.loginCreds.password = "";
 
-          $state.go('tab.home');
+
+          console.log('about to broadcast login')
+          $rootScope.$broadcast('login');
+          $state.go('tab.certifications');
+
         }, function(error){
           console.log('Invalid Login');
           $scope.loginCreds.password = "";
@@ -48,7 +51,7 @@
     };
 
   };
-    LoginController.$inject = ['$scope', '$state', '$window', 'AuthFactory' ];
+    LoginController.$inject = ['$scope', '$state', '$window', 'AuthFactory', '$rootScope' ];
 
     angular.module('medprofolio')
       .controller('LoginController', LoginController);
@@ -81,7 +84,7 @@
             console.log(user.getSessionToken());
           }
           console.log("Created User");
-          $state.go("tab.home");
+          $state.go("tab.certifications");
         });
 
     };
