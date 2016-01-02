@@ -54,12 +54,14 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
       })
 
       .state('signup', {
+        cache: false,
         url: '/signup',
         templateUrl: 'templates/signup.html',
         controller: 'SignupController'
       })
 
       .state('forgot', {
+        cache: false,
         url: '/forgot',
         templateUrl: 'templates/forgot.html',
         controller: 'ForgotPasswordController'
@@ -75,15 +77,6 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
 
       // Each tab has its own nav history stack:
 
-      .state('tab.jobs', {
-        url: '/jobs',
-        views: {
-          'tab-jobs': {
-            templateUrl: 'templates/tab-jobs.html',
-            controller: 'JobsCtrl'
-          }
-        }
-      })
 
       .state('tab.certifications', {
         url: '/certifications',
@@ -96,6 +89,7 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
       })
 
       .state('tab.add-certification', {
+        cache: false,
         url: '/add-certification',
         views: {
           'tab-add-certification': {

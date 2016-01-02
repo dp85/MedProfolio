@@ -101,6 +101,8 @@
           console.debug(factory.certifications);
 
           d.resolve();
+        }, error: function(error) {
+          d.reject(error);
         }
       });
 

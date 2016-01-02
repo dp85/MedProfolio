@@ -76,8 +76,11 @@
         for(var i = 0; i < profolio.certs.length; i++){
           //console.log(profolio.certs[i].attributes.title);
           //console.log(profolio.certs[i].attributes.expiration);
-          var expire = new Date(profolio.certs[i].attributes.expiration);
-          var expireString = expire.getMonth() + '/' + expire.getDate() + '/' + expire.getFullYear();
+          var expireString = "";
+          if(profolio.certs[i].attributes.expiration) {
+            var expire = new Date(profolio.certs[i].attributes.expiration);
+            expireString = expire.getMonth() + '/' + expire.getDate() + '/' + expire.getFullYear();
+          }
           tocBody.push([profolio.certs[i].attributes.title, expireString]);
         }
 
@@ -125,11 +128,17 @@
           }
 
           // Issued, Expires, Notes
-          var issued = new Date(profolio.certs[i].attributes.issued);
-          var issuedString = issued.getMonth() + '/' + issued.getDate() + '/' + issued.getFullYear();
+          var issuedString = "";
+          if(profolio.certs[i].attributes.issued) {
+            var issued = new Date(profolio.certs[i].attributes.issued);
+            issuedString = issued.getMonth() + '/' + issued.getDate() + '/' + issued.getFullYear();
+          }
 
-          var expire = new Date(profolio.certs[i].attributes.expiration);
-          var expireString = expire.getMonth() + '/' + expire.getDate() + '/' + expire.getFullYear();
+          var expireString = "";
+          if(profolio.certs[i].attributes.expiration) {
+            var expire = new Date(profolio.certs[i].attributes.expiration);
+            expireString = expire.getMonth() + '/' + expire.getDate() + '/' + expire.getFullYear();
+          }
 
           content.push({
             margin: [20,20,20,0],

@@ -64,7 +64,7 @@
 
 (function() {
 
-  var SignupController = function ($scope, $state, $window, AuthFactory ) {
+  var SignupController = function ($scope, $state, $window, AuthFactory, $rootScope ) {
 
     $scope.newUser = {
       "firstname": "",
@@ -84,6 +84,7 @@
             console.log(user.getSessionToken());
           }
           console.log("Created User");
+          $rootScope.$broadcast('login');
           $state.go("tab.certifications");
         });
 
@@ -91,7 +92,7 @@
 
 
   };
-  SignupController.$inject = ['$scope', '$state', '$window', 'AuthFactory'];
+  SignupController.$inject = ['$scope', '$state', '$window', 'AuthFactory', '$rootScope'];
 
   angular.module('medprofolio')
     .controller('SignupController', SignupController);

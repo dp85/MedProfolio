@@ -31,10 +31,15 @@
 
 
         DataFactory.loadCertifications().then(function () {
-          $scope.certifications = DataFactory.certifications;
           $scope.dataFactory = DataFactory;
           $ionicLoading.hide();
           $ionicScrollDelegate.scrollTop(false);
+        }, function(error) {
+          $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: "Error loading Profolio",
+            subTitle: "Please Log Out and try again."
+          });
         });
       }
       // for the first login, the event will not be heard because the
@@ -56,7 +61,6 @@
       $scope.refreshCertifications = function() {
         $ionicLoading.show();
         DataFactory.loadCertifications().then(function () {
-          $scope.certifications = DataFactory.certifications;
           $ionicLoading.hide();
         });
       };
@@ -138,7 +142,7 @@
           // Build the data that is needed for the content of the PDF.
           var profolio = {
             name: $scope.user.firstname + ' ' + $scope.user.lastname,
-            certs: $scope.certifications
+            certs: DataFactory.certifications
           };
 
 
