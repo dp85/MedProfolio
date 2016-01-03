@@ -23,7 +23,9 @@
 
       function loadProfolio()
       {
-        $ionicLoading.show();
+        // 1/2/2016 - Disabled Loading-spinner from showing here because
+        // i noticed it hanging randomly when testing on iPhone.
+       // $ionicLoading.show();
 
         $scope.dataFactory = null;
         $scope.user.firstname = DataFactory.getFirstname();
@@ -32,10 +34,10 @@
 
         DataFactory.loadCertifications().then(function () {
           $scope.dataFactory = DataFactory;
-          $ionicLoading.hide();
+       //   $ionicLoading.hide();
           $ionicScrollDelegate.scrollTop(false);
         }, function(error) {
-          $ionicLoading.hide();
+        //  $ionicLoading.hide();
           $ionicPopup.alert({
             title: "Error loading Profolio",
             subTitle: "Please Log Out and try again."

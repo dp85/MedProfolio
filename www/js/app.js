@@ -48,6 +48,7 @@ angular.module('medprofolio', ['ionic', 'ngMessages', 'ngCordova'])
     $stateProvider
 
       .state('login', {
+        cache: false,
         url: '/login',
         templateUrl: 'templates/login.html',
         controller: 'LoginController'
